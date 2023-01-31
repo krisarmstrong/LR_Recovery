@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/LR_Recovery.iml" filepath="$PROJECT_DIR$/.idea/LR_Recovery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/LRRecovery.iml" filepath="$PROJECT_DIR$/.idea/LRRecovery.iml" />
     </modules>
   </component>
 </project>
