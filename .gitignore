@@ -1,8 +1,23 @@
-
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+# Distribution
+build/
+dist/
+*.egg-info/
+# Virtual environments
+env/
+venv/
+.venv/
+.env/
+# Logs
+*.log
+# IDE
+.vscode/
+.idea/
+# OS
 .DS_Store
-<<<<<<< HEAD
-=======
-.DS_Store
-.DS_Store
->>>>>>> c98f41b4beeaa3a63bb261d776cd19156545d271
-.DS_Store
+# Project-specific
+tests/output/
+archive/
