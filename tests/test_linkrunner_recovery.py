@@ -1,56 +1,45 @@
 #!/usr/bin/env python3
 """
-Project Title: LinkRunnerRecoveryTests
-
-Pytest smoke tests for linkrunner_recovery.py functionality.
-
-Author: Kris Armstrong
+Tests for LinkRunnerRecovery.
 """
-__version__ = "1.0.0"
-
 import pytest
-import subprocess
 from pathlib import Path
-import linkrunner_recovery
+from linkrunner_recovery import __version__, parse_arguments, check_sensitive_data, Config
 
 @pytest.fixture
-def temp_dir(tmp_path: Path) -> Path:
-    """Create a temporary directory for testing.
+def tmp_device_path(tmp_path):
+    """Create a temporary device path with command.txt and results.txt."""
+    device_path = tmp_path / "device"
+    device_path.mkdir()
+    (device_path / Config.MARKER_FILE).touch()
+    return device_path
 
-    Args:
-        tmp_path: Pytest-provided temporary path.
+def test_version() -> None:
+    """Test version format."""
+    assert __version__ == "2.0.1"
 
-    Returns:
-        Path to temporary directory.
-    """
-    return tmp_path
-
-def test_parse_arguments_valid(temp_dir: Path) -> None:
+def test_parse_arguments_valid():
     """Test parsing valid command-line arguments."""
-    args = linkrunner_recovery.parse_arguments(['--mac_address', '00:11:22:33:44:55', '--serial_number', 'ABC123'])
-    assert args.mac_address == '00:11:22:33:44:55'
-    assert args.serial_number == 'ABC123'
+    args = parse_arguments(["--mac_address", "00:11:22:33:44:55", "--serial_number", "ABC123"])
+    assert args.mac_address == "00:11:22:33:44:55"
+    assert args.serial_number == "ABC123"
     assert args.opt_8021x == 0
     assert args.opt_reports == 0
     assert args.opt_reflector == 0
 
-def test_keyboard_interrupt(temp_dir: Path, caplog: pytest.LogCaptureFixture) -> None:
-    """Test KeyboardInterrupt handling.
+def test_parse_arguments_invalid_mac():
+    """Test parsing invalid MAC address."""
+    with pytest.raises(SystemExit):
+        parse_arguments(["--mac_address", "invalid", "--serial_number", "ABC123"])
 
-    Args:
-        temp_dir: Temporary directory for testing.
-        caplog: Pytest fixture to capture log output.
-    """
-    with pytest.raises(SystemExit) as exc:
-        linkrunner_recovery.setup_logging(False)
-        raise KeyboardInterrupt
-    assert exc.value.code == 0
-    assert "Cancelled by user" in caplog.text
+def test_check_sensitive_data_clean(tmp_device_path):
+    """Test checking for sensitive data in a clean command.txt."""
+    command_file = tmp_device_path / Config.COMMAND_FILE
+    command_file.write_text("MAC=00:11:22:33:44:55\n", encoding=Config.ENCODING)
+    assert check_sensitive_data(tmp_device_path) is True
 
-def test_version_bumper_generation(temp_dir: Path) -> None:
-    """Test version_bumper.py generation."""
-    from git_setup import VERSION_BUMPER_TEMPLATE, create_file
-    create_file(temp_dir / 'version_bumper.py', VERSION_BUMPER_TEMPLATE)
-    assert (temp_dir / 'version_bumper.py').exists()
-    result = subprocess.run(['python', 'version_bumper.py', '--help'], cwd=temp_dir, capture_output=True, text=True)
-    assert result.returncode == 0
+def test_check_sensitive_data_sensitive(tmp_device_path):
+    """Test checking for sensitive data in command.txt."""
+    command_file = tmp_device_path / Config.COMMAND_FILE
+    command_file.write_text("api_key='secret123'\n", encoding=Config.ENCODING)
+    assert check_sensitive_data(tmp_device_path) is False

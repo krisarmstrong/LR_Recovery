@@ -1,41 +1,62 @@
 # LinkRunnerRecovery
 
-A Python tool to recover and update MAC address, serial number, and option bits on a LinkRunner Pro/Duo device.
-
-Designed for network technicians and administrators, it writes commands to `command.txt` and reads `results.txt` on the device's drive, with cross-platform detection for Windows, Linux, and macOS.
+Recovers and updates MAC address, serial number, and option bits on a LinkRunner Pro/Duo device.
 
 ## Installation
+
 ```bash
-chmod +x linkrunner_recovery.py
+git clone https://github.com/krisarmstrong/linkrunner-recovery
+cd linkrunner-recovery
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
 ## Usage
-### linkrunner_recovery.py
+
 ```bash
-./linkrunner_recovery.py --mac_address 00:11:22:33:44:55 --serial_number ABC123 [--opt_8021x 1] [--opt_reports 1] [--opt_reflector 1] [--verbose] [--logfile path]
+python linkrunner_recovery.py --mac_address 00:11:22:33:44:55 --serial_number ABC123 --verbose
 ```
 
-### version_bumper.py
-```bash
-python version_bumper.py --project_dir /path/to/project [--type minor] [--commit] [--git_tag] [--dry_run]
-```
+- `--mac_address`: MAC address (XX:XX:XX:XX:XX:XX, e.g., 00:11:22:33:44:55).
+- `--serial_number`: Serial number of the device.
+- `--opt_8021x`: 802.1x option bit (0=disabled, 1=enabled, default: 0).
+- `--opt_reports`: Reports option bit (0=disabled, 1=enabled, default: 0).
+- `--opt_reflector`: Reflector option bit (0=disabled, 1=enabled, default: 0).
+- `--verbose`: Enable verbose logging.
+- `--logfile`: Log file path (default: linkrunner_recovery.log).
 
-## Generated Files (via git_setup.py)
-- **.gitignore**: Ignores Python, IDE, OS, and project-specific files (e.g., `__pycache__`, `.venv`, `tests/output/`).
-- **README.md**: Project template with customizable title, installation, and usage.
-- **CHANGELOG.md**: Initial changelog with a 0.1.0 entry, customizable author.
-- **requirements.txt**: Placeholder for dependencies.
-- **LICENSE**: Proprietary license for LinkRunner devices.
-- **CONTRIBUTING.md**: Fork-branch-PR guidelines.
-- **CODE_OF_CONDUCT.md**: Contributor Covenant with contact info.
-- **tests/**: Directory with a placeholder test file.
-- **version_bumper.py** (optional): Tool for bumping semantic versions.
+## Files
+
+- `linkrunner_recovery.py`: Main script.
+- `version_bumper.py`: Version management tool.
+- `tests/test_linkrunner_recovery.py`: Pytest suite.
+- `requirements.txt`: Dependencies.
+- `CHANGELOG.md`: Version history.
+- `LICENSE`: MIT License.
+- `CONTRIBUTING.md`: Contribution guidelines.
+- `CODE_OF_CONDUCT.md`: Contributor Covenant.
+
+## GitHub Setup
+
+```bash
+gh repo create linkrunner-recovery --public --source=. --remote=origin
+git init
+git add .
+git commit -m "Initial commit: LinkRunnerRecovery v2.0.1"
+git tag v2.0.1
+git push origin main --tags
+```
 
 ## Notes
-- **Proprietary License**: This software is intended for use with LinkRunner Pro/Duo devices. Unauthorized distribution or modification is prohibited.
-- **Drive Detection**: Requires a mounted device with volume label “LR” or `linkrunner.id` file.
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com)
-[![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)](https://github.com)
-[![License](https://img.shields.io/badge/license-Proprietary-red)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org)
+- **Drive Detection**: Requires a mounted device with volume label “LR” or `linkrunner.id` file.
+- **Testing**: Tests cover argument parsing and sensitive data checks; physical device testing requires a LinkRunner Pro/Duo.
+
+## Contributing
+
+See CONTRIBUTING.md for details.
+
+## License
+
+MIT License. See LICENSE for details.

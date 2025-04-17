@@ -1,23 +1,33 @@
 # Python
+*.pyc
 __pycache__/
-*.py[cod]
-*$py.class
-# Distribution
-build/
-dist/
-*.egg-info/
-# Virtual environments
+*.pyo
+*.pyd
+.Python
 env/
 venv/
-.venv/
-.env/
-# Logs
-*.log
+ENV/
+*.egg-info/
+dist/
+build/
+*.whl
+
 # IDE
-.vscode/
 .idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
 # OS
 .DS_Store
-# Project-specific
+Thumbs.db
+
+# Tests/Output
 tests/output/
+*.log
+*.log.*
+
+# Archive
+*.zip
+*.tar.gz
 archive/

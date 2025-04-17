@@ -1,2 +1,1 @@
-# External dependencies
-# None required (uses Python standard library)
+# No external dependencies
