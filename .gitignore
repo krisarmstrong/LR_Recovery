@@ -1,8 +1,33 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.whl
 
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
 .DS_Store
-<<<<<<< HEAD
-=======
-.DS_Store
-.DS_Store
->>>>>>> c98f41b4beeaa3a63bb261d776cd19156545d271
-.DS_Store
+Thumbs.db
+
+# Tests/Output
+tests/output/
+*.log
+*.log.*
+
+# Archive
+*.zip
+*.tar.gz
+archive/
